@@ -105,4 +105,9 @@ socket.on('new_user_connected',function(data){
 	}
 });
 
+socket.on('disconnected',function(data){
+	console.log(data +' disconnected');
+	$('#'+data).remove();
+});
+
 });
