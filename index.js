@@ -10,7 +10,23 @@ var users = {};
 io.on('connection',function(socket){
 	console.log('a socket is conected');
 
-	
+	socket.on('new_user_connected',function(username,callback){
+		console.log('new user connected');
+		if(username in users)
+		{
+			callback(false);
+		}
+		else
+		{
+			socket.username = username;
+			users[username] = socket; // saving socket for future references
+			no_of_users++;
+			socket.broadcast.emit('new_user_connected',username);
+			callback(Object.keys(users));
+
+		}
+		
+	});
 
 });
 
