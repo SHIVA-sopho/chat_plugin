@@ -1,3 +1,4 @@
+
 $(function(){
 
 var $window = $('window');
@@ -39,7 +40,29 @@ $('.header').click(function(){
 	}
 
 });
+
 //***********************************************
+
+/*************************everyhing related to chat popup********;*******************/
+
+function create_chatbox(chatid){
+	console.log('chat id = ' + chatid);
+
+}
+//adds user to the friends list
+function add_user(user){
+	
+	console.log(user);
+	$content.append($('<li id = "'+user+'"> ').text(user));
+	
+	console.log('frnd_name = '+user);
+	$('#'+user).click(function(){
+		console.log(user);
+		create_chatbox(user);
+	});
+}
+
+
 function setup_user()
 {
 	console.log('setup_user called');
@@ -58,13 +81,12 @@ function setup_user()
 				$name_input.off('click');
 
 				var len = data.length;
-				for(i = 0 ; i < len;  i++)
+				for(i = 0 ; i < len - 1;  i++)
 				{
-					console.log('i = '+ i);
-					if(data[i]===username)
-						continue;
-					$content.append($('<li id = "'+data[i]+'"> ').text(data[i]));
-					console.log(data[i]);
+
+					add_user(data[i]);
+					
+
 				}
 			}
 			else
@@ -80,6 +102,7 @@ function setup_user()
 
 }
 
+/* function which listens for the name of the user  */
 $('.user_info input').keypress(function(key){
 	console.log("keypress works");
 	if(key.which===13)
@@ -88,11 +111,7 @@ $('.user_info input').keypress(function(key){
 		setup_user();
 	}
 });
-
-
-
-
-
+//***********************************************************************************
 
 
 
@@ -101,7 +120,7 @@ socket.on('new_user_connected',function(data){
 	console.log('new user connected recieved');
 	if(username)
 	{
-		$content.append($('<li id = "'+data+'"> ').text(data));
+		add_user(data);
 	}
 });
 
@@ -109,5 +128,7 @@ socket.on('disconnected',function(data){
 	console.log(data +' disconnected');
 	$('#'+data).remove();
 });
+
+
 
 });
