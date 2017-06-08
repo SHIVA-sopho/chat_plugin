@@ -47,17 +47,21 @@ $('.header').click(function(){
 
 function create_chatbox(chatid){
 	console.log('chat id = ' + chatid);
+	var elem = '<div class="chatbox" id="chatid">';
+	elem += '<div class="header"> <div class="left"> </div> <div class="right"> </div></div>';
+	elem += '<div class="content"> <ul></ul> </div>';
+	elem += '<div class="footer"><input type="text" placeholder="type here"></div> </div>';
+	$('body')[0].innerHTML += elem; 
+
 
 }
 //adds user to the friends list
 function add_user(user){
 	
-	console.log(user);
 	$content.append($('<li id = "'+user+'"> ').text(user));
 	
 	console.log('frnd_name = '+user);
 	$('#'+user).click(function(){
-		console.log(user);
 		create_chatbox(user);
 	});
 }

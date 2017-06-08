@@ -44,6 +44,14 @@ a{
 	border-color: black;
 }
 
+.chatbox{
+	position:fixed;
+	right:210px;
+	bottom: 0;
+	width: 205px;
+	border-color: black;
+}
+
 .header{
 	top: 0;
 }
