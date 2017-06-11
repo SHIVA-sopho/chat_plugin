@@ -11,11 +11,13 @@ var $name_input = $('.user_info input');
 var socket = io.connect();
 
 var username;
-
+var max_no_of_chatbox = 0;
+var chatbox = [];
 
 //********************************************
 var clicked = false;
 console.log("js running");
+
 $('.header').click(function(){
 	console.log("clicked");
 	clicked = !clicked;
@@ -41,27 +43,79 @@ $('.header').click(function(){
 
 });
 
-//***********************************************
 
-/*************************everyhing related to chat popup********;*******************/
+/*************************everyhing related to chat popup***************************/
 
 function create_chatbox(chatid){
+	console.log('create_chatbox called');
+	var len = chatbox.length;
+	for(i = 0; i < len ; i++)
+	{
+		if(chatid === chatbox[i])
+		{
+			chatbox.splice(i,1);
+			chatbox.unshift(chatid);
+			display_chatbox();
+			return;
+		}
+	}
+	
 	console.log('chat id = ' + chatid);
-	var elem = '<div class="chatbox" id="chatid">';
-	elem += '<div class="header"> <div class="left"> </div> <div class="right"> </div></div>';
-	elem += '<div class="content"> <ul></ul> </div>';
+	var elem = '<div class="chatbox" id="'+chatid+'">';
+	elem += '<div class="header"> <div class="left">'+chatid+'</div> <div class="right"></div></div>';
+	elem += '<div class="content"> this is content<ul><li>dont fuck with me</li></ul> </div>';
 	elem += '<div class="footer"><input type="text" placeholder="type here"></div> </div>';
-	$('body')[0].innerHTML += elem; 
-
+	$('body').append(elem); 
+	
+	chatbox.unshift(chatid);
+	display_chatbox();
 
 }
+
+function display_chatbox(){
+	console.log('display_chatbox called');
+	var width = window.innerWidth;
+	console.log('width = ' + width);
+	if(width < 540)
+	{
+		max_no_of_chatbox = 0;
+	}
+	else
+	{
+		width = width - 210;
+		max_no_of_chatbox = width/205;
+		max_no_of_chatbox = Math.floor(max_no_of_chatbox);
+	}
+	console.log(max_no_of_chatbox);
+	var right = 210;
+	for(i = 0 ; i < max_no_of_chatbox ; i++)
+	{
+		if(chatbox[i] == undefined)
+			break;
+
+		var elem = $('#'+chatbox[i]);
+		elem.css('right',right+'px');
+		elem.css('display','block');
+
+		right  = right + 210;
+	}
+	if(chatbox[max_no_of_chatbox] != undefined)
+		$('#'+chatbox[i]).css('display','none');
+
+}
+
+/*************************************************************************************************************/
 //adds user to the friends list
 function add_user(user){
 	
-	$content.append($('<li id = "'+user+'"> ').text(user));
+	$content.append($('<li id = "'+user+'Id"> ').text(user));
 	
-	console.log('frnd_name = '+user);
-	$('#'+user).click(function(){
+	/*console.log('frnd_name = '+user);
+	$('#'+user+'Id').click(function(){
+		create_chatbox(user);
+	});*/
+
+	$('#'+user+'Id').on('click',function(){
 		create_chatbox(user);
 	});
 }

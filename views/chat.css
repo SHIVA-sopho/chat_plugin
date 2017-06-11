@@ -45,6 +45,7 @@ a{
 }
 
 .chatbox{
+	display: none;
 	position:fixed;
 	right:210px;
 	bottom: 0;
@@ -52,10 +53,40 @@ a{
 	border-color: black;
 }
 
+.header div{
+	display: inline-block;
+}
+
 .header{
 	top: 0;
+	height: inherit;
+	width: inherit;
+	
 }
+.header .left{
+
+	width:auto;
+	max-width: 70%;
+	float: left;
+	overflow-x: hidden;
+
+}
+.header .right{
+	
+	width: auto;
+	max-width: 20%;
+	float: right;
+	overflow-x: hidden;
+
+}
+.chatbox .content{
+	height: 200px;
+	display: block;
+	overflow-y: scroll;
+}
+
 .content{
+	clear: both;
 	display: none;
 	overflow-y: scroll;
 }
