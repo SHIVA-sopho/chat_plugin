@@ -62,15 +62,36 @@ function create_chatbox(chatid){
 	
 	console.log('chat id = ' + chatid);
 	var elem = '<div class="chatbox" id="'+chatid+'">';
-	elem += '<div class="header"> <div class="left">'+chatid+'</div> <div class="right"></div></div>';
+	elem += '<div class="header"> <div class="left">'+chatid+'</div> <div class="right"><i class="fa fa-times fa-1.5x" aria-hidden="true"></i></div></div>';
 	elem += '<div class="content"> this is content<ul><li>dont fuck with me</li></ul> </div>';
 	elem += '<div class="footer"><input type="text" placeholder="type here"></div> </div>';
 	$('body').append(elem); 
-	
+    
+    // to close the chatbox
+	$('#'+chatid + ' i').on('click',function(){
+		close_chatbox(chatid);
+	});
+
+
 	chatbox.unshift(chatid);
 	display_chatbox();
 
 }
+function close_chatbox(id){
+	
+	for(i = 0; i < max_no_of_chatbox; i++)
+	{
+		if(chatbox[i] === id)
+		{
+			chatbox.splice(i,1);
+			$('#'+id).css('display','none');
+			console.log(chatbox);
+			break;
+		}
+	} 
+	display_chatbox();
+}
+
 
 function display_chatbox(){
 	console.log('display_chatbox called');

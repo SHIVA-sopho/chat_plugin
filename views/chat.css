@@ -84,6 +84,9 @@ a{
 	display: block;
 	overflow-y: scroll;
 }
+.chatbox .footer input{
+	width: 100%;
+}
 
 .content{
 	clear: both;
