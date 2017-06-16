@@ -35,6 +35,12 @@ io.on('connection',function(socket){
 		
 	});
 
+	socket.on('private_message',function(msg,rid){
+		
+		console.log("pvt_msg called");
+		users[rid].emit('private_message',msg,socket.username);
+	});
+
 });
 
 http.listen(3000,function(){

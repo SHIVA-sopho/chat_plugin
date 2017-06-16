@@ -72,7 +72,7 @@ function create_chatbox(chatid){
 		close_chatbox(chatid);
 	});
 
-
+	activate_input(chatid);
 	chatbox.unshift(chatid);
 	display_chatbox();
 
@@ -123,6 +123,27 @@ function display_chatbox(){
 	if(chatbox[max_no_of_chatbox] != undefined)
 		$('#'+chatbox[i]).css('display','none');
 
+}
+
+// enables the input of chat box to listen for enter key
+function activate_input(chatid){
+	console.log('active_input called');
+	var elemid ='#'+chatid +' input'; 
+	console.log(elemid);
+$(elemid).keypress(function(key){
+
+	console.log('key pressed');
+	if(key.which === 13)
+	{
+		console.log('enter key pressed');
+		var $elem = $(this);
+		var msg = $elem.val();
+		var id = $elem.parents('.chatbox').attr('id');
+		console.log(msg);
+		console.log(id);
+		socket.emit('private_message',msg,id); 
+	}
+});
 }
 
 /*************************************************************************************************************/
@@ -183,7 +204,7 @@ function setup_user()
 
 /* function which listens for the name of the user  */
 $('.user_info input').keypress(function(key){
-	console.log("keypress works");
+
 	if(key.which===13)
 	{
 		console.log('its an enter key');
@@ -191,7 +212,6 @@ $('.user_info input').keypress(function(key){
 	}
 });
 //***********************************************************************************
-
 
 
 /**************************lisstens to the incoming events ************************/
@@ -209,5 +229,7 @@ socket.on('disconnected',function(data){
 });
 
 
-
+socket.on('private_message',function(msg,sid){
+	console.log(sid + ': ' +msg);
+});
 });
