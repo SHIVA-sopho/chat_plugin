@@ -63,7 +63,7 @@ function create_chatbox(chatid){
 	console.log('chat id = ' + chatid);
 	var elem = '<div class="chatbox" id="'+chatid+'">';
 	elem += '<div class="header"> <div class="left">'+chatid+'</div> <div class="right"><i class="fa fa-times fa-1.5x" aria-hidden="true"></i></div></div>';
-	elem += '<div class="content"> this is content<ul><li>dont fuck with me</li></ul> </div>';
+	elem += '<div class="content"> this is content<ul></ul> </div>';
 	elem += '<div class="footer"><input type="text" placeholder="type here"></div> </div>';
 	$('body').append(elem); 
     
@@ -142,7 +142,8 @@ $(elemid).keypress(function(key){
 		console.log(msg);
 		console.log(id);
 		socket.emit('private_message',msg,id); 
-		$elem.val = ''; 
+		console.log($elem.val());
+		$elem.val(''); 
 	}
 });
 }
