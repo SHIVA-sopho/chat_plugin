@@ -142,6 +142,7 @@ $(elemid).keypress(function(key){
 		console.log(msg);
 		console.log(id);
 		socket.emit('private_message',msg,id); 
+		$elem.val = ''; 
 	}
 });
 }
@@ -231,5 +232,22 @@ socket.on('disconnected',function(data){
 
 socket.on('private_message',function(msg,sid){
 	console.log(sid + ': ' +msg);
+	var sndr_prsnt = false;
+	for(var i=0;i<max_no_of_chatbox;i++)
+	{
+		if(chatbox[i]===sid)
+		{
+			sndr_prsnt = true;
+			break;
+		}
+	}
+	if(sndr_prsnt === false)
+	{
+		create_chatbox(sid);
+		var msg_box = $('#'+sid +' > .content > ul');
+		console.log(msg_box);
+		msg_box.append('<li>'+sid +':'+ msg +'</>');
+	}
+
 });
 });
