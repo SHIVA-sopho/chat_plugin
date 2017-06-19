@@ -42,7 +42,19 @@ $('.header').click(function(){
 	}
 
 });
+/*****************utility functions***********************************************/
 
+function is_sndr_prsnt(sid){
+
+	for(var i=0;i<max_no_of_chatbox;i++)
+	{
+		if(chatbox[i]===sid)
+			return true;		
+	}
+
+	return false;
+
+}
 
 /*************************everyhing related to chat popup***************************/
 
@@ -127,28 +139,27 @@ function display_chatbox(){
 
 // enables the input of chat box to listen for enter key
 function activate_input(chatid){
-	console.log('active_input called');
-	var elemid ='#'+chatid +' input'; 
-	console.log(elemid);
-$(elemid).keypress(function(key){
 
-	console.log('key pressed');
-	if(key.which === 13)
-	{
-		console.log('enter key pressed');
-		var $elem = $(this);
-		var msg = $elem.val();
-		var id = $elem.parents('.chatbox').attr('id');
-		console.log(msg);
-		console.log(id);
-		socket.emit('private_message',msg,id); 
-		console.log($elem.val());
-		$elem.val(''); 
-	}
-});
+	var elemid ='#'+chatid +' input'; 
+	var msg_box = $('#'+chatid +' > .content > ul');
+
+	$(elemid).keypress(function(key){
+
+		console.log('key pressed');
+		if(key.which === 13)
+		{
+			var $elem = $(this);
+			var msg = $elem.val();
+			var id = $elem.parents('.chatbox').attr('id');
+			msg_box.append('<li class="sent_message"> you:'+ msg +'</>'); //pushing in your message in own side
+			$elem.val(''); 
+			socket.emit('private_message',msg,id); 
+			
+		}
+	});
 }
 
-/*************************************************************************************************************/
+/**************************************setup of user ****************************************************/
 //adds user to the friends list
 function add_user(user){
 	
@@ -233,22 +244,16 @@ socket.on('disconnected',function(data){
 
 socket.on('private_message',function(msg,sid){
 	console.log(sid + ': ' +msg);
-	var sndr_prsnt = false;
-	for(var i=0;i<max_no_of_chatbox;i++)
-	{
-		if(chatbox[i]===sid)
-		{
-			sndr_prsnt = true;
-			break;
-		}
-	}
-	if(sndr_prsnt === false)
+	
+	if(is_sndr_prsnt(sid) === false)
 	{
 		create_chatbox(sid);
-		var msg_box = $('#'+sid +' > .content > ul');
-		console.log(msg_box);
-		msg_box.append('<li>'+sid +':'+ msg +'</>');
-	}
+    }	
+
+	var msg_box = $('#'+sid +' > .content > ul');
+	//console.log(msg_box);
+	msg_box.append('<li class = "recived_message">'+sid +':'+ msg +'</>');
+	
 
 });
 });

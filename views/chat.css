@@ -12,6 +12,12 @@ div{
 a{
 	list-style: none;
 }
+ul{
+	list-style-position: inside;
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 2px;
+}
 .user_info{
 	width: 205px;
 	min-height: 200px;
@@ -83,7 +89,21 @@ a{
 	height: 200px;
 	display: block;
 	overflow-y: scroll;
+	word-wrap: break-word;
 }
+.chatbox .content .recived_message{
+	max-width: 80%;
+	float: left;
+	word-wrap: break-word;
+
+}
+.chatbox .content .sent_message{
+	
+	max-width: 80%;
+	float: right;
+	word-wrap: break-word;
+}
+
 .chatbox .footer input{
 	width: 100%;
 }
