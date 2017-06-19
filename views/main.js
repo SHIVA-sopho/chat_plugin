@@ -4,7 +4,7 @@ $(function(){
 var $window = $('window');
 var $sidebar = $('.sidebar');	
 var $header = $('.header');
-var $content = $('.content');
+var $content = $('.sidebar > .content');
 var $user_info = $('.user_info');
 var $name_input = $('.user_info input');
 
@@ -74,8 +74,8 @@ function create_chatbox(chatid){
 	
 	console.log('chat id = ' + chatid);
 	var elem = '<div class="chatbox" id="'+chatid+'">';
-	elem += '<div class="header"> <div class="left">'+chatid+'</div> <div class="right"><i class="fa fa-times fa-1.5x" aria-hidden="true"></i></div></div>';
-	elem += '<div class="content"> this is content<ul></ul> </div>';
+	elem += '<div class="header"><div class="left">'+chatid+'</div> <div class="right"><i class="fa fa-times fa-1.5x" aria-hidden="true"></i></div></div>';
+	elem += '<div class="content"><ul></ul> </div>';
 	elem += '<div class="footer"><input type="text" placeholder="type here"></div> </div>';
 	$('body').append(elem); 
     
@@ -116,7 +116,7 @@ function display_chatbox(){
 	else
 	{
 		width = width - 210;
-		max_no_of_chatbox = width/205;
+		max_no_of_chatbox = width/315;
 		max_no_of_chatbox = Math.floor(max_no_of_chatbox);
 	}
 	console.log(max_no_of_chatbox);
@@ -130,7 +130,7 @@ function display_chatbox(){
 		elem.css('right',right+'px');
 		elem.css('display','block');
 
-		right  = right + 210;
+		right  = right + 315;
 	}
 	if(chatbox[max_no_of_chatbox] != undefined)
 		$('#'+chatbox[i]).css('display','none');
@@ -151,7 +151,8 @@ function activate_input(chatid){
 			var $elem = $(this);
 			var msg = $elem.val();
 			var id = $elem.parents('.chatbox').attr('id');
-			msg_box.append('<li class="sent_message"> you:'+ msg +'</>'); //pushing in your message in own side
+			var li = '<li class="sent_message"> you:'+ msg +'</li> ';
+			msg_box.append(li); //pushing in your message in own side
 			$elem.val(''); 
 			socket.emit('private_message',msg,id); 
 			
@@ -163,7 +164,8 @@ function activate_input(chatid){
 //adds user to the friends list
 function add_user(user){
 	
-	$content.append($('<li id = "'+user+'Id"> ').text(user));
+	var elem = '<li  id = "'+user+'Id">'+user+'</li>';
+	$('.sidebar >.content > ul').append(elem);
 	
 	/*console.log('frnd_name = '+user);
 	$('#'+user+'Id').click(function(){
@@ -238,7 +240,7 @@ socket.on('new_user_connected',function(data){
 
 socket.on('disconnected',function(data){
 	console.log(data +' disconnected');
-	$('#'+data).remove();
+	$('#'+data+'Id').remove();
 });
 
 
@@ -251,8 +253,9 @@ socket.on('private_message',function(msg,sid){
     }	
 
 	var msg_box = $('#'+sid +' > .content > ul');
-	//console.log(msg_box);
-	msg_box.append('<li class = "recived_message">'+sid +':'+ msg +'</>');
+
+	var elem = '<li class = "recived_message">'+sid +':'+ msg +'</li> ';
+	msg_box.append(elem);
 	
 
 });
